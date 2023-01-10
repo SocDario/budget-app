@@ -1,0 +1,8 @@
+<div class="form-container">
+  <app-sign-up-form
+    [isSignUpLoading]="(isSignUpLoading$ | async)!"
+    [isGoogleAuthenticationLoading]="(isGoogleAuthenticationLoading$ | async)!"
+    (formSubmited)="onSignUpFormSubmit($event)"
+    (googleAuthentication)="onGoogleAuthentication()"
+  ></app-sign-up-form>
+</div>

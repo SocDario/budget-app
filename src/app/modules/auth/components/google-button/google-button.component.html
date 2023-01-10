@@ -1,0 +1,16 @@
+<button
+  mat-raised-button
+  type="button"
+  class="google-btn"
+  [disabled]="isDisabled"
+>
+  <ng-container *ngIf="!isGoogleAuthenticationLoading">
+    <div class="google-btn__inner-container">
+      <img src="assets/googleIcon.svg" class="google-btn__image" />
+      <span class="google-btn__label">{{ label }}</span>
+    </div>
+  </ng-container>
+  <mat-icon *ngIf="isGoogleAuthenticationLoading"
+    ><mat-spinner color="accent" diameter="20"> </mat-spinner
+  ></mat-icon>
+</button>

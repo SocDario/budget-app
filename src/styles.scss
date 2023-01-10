@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html,
 body {
   height: 100%;
@@ -5,4 +11,5 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f1f1f4;
 }

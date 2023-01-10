@@ -1,0 +1,58 @@
+<form class="form" [formGroup]="signInForm" (submit)="handleFormSubmited()">
+  <h1 class="form__heading">SIGN IN</h1>
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      placeholder="example@gmail.com"
+      formControlName="email"
+      [disabledControl]="isGoogleAuthenticationLoading"
+    />
+    <mat-error *ngIf="email?.hasError('required')"
+      >This field is <strong>required</strong></mat-error
+    >
+    <mat-error *ngIf="email?.hasError('email') && !email?.hasError('required')"
+      >Please enter a valid email address</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      formControlName="password"
+      [disabledControl]="isGoogleAuthenticationLoading"
+      type="{{ passwordShown ? 'text' : 'password' }}"
+    />
+    <mat-icon matSuffix (click)="passwordShown = !passwordShown">{{
+      passwordShown ? 'visibility' : 'visibility_off'
+    }}</mat-icon>
+    <mat-error *ngIf="password?.hasError('required')"
+      >This field is <strong>required</strong></mat-error
+    >
+  </mat-form-field>
+  <button
+    class="form__input"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="
+      !signInForm.valid || isGoogleAuthenticationLoading || isSignInLoading
+    "
+  >
+    <mat-icon *ngIf="isSignInLoading"
+      ><mat-spinner color="accent" diameter="20"> </mat-spinner
+    ></mat-icon>
+    <span *ngIf="!isSignInLoading">SIGN IN</span>
+  </button>
+  <app-google-button
+    label="Sign in with Google"
+    [isGoogleAuthenticationLoading]="isGoogleAuthenticationLoading"
+    [isDisabled]="isGoogleAuthenticationLoading || isSignInLoading"
+    (click)="handleGoogleAuthentication()"
+  ></app-google-button>
+  <hr />
+  <div class="form__link-container">
+    <p>Don't have an account?</p>
+    <a routerLink="/sign-up">Sign up</a>
+  </div>
+</form>
