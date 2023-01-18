@@ -1,0 +1,35 @@
+<ng-container>
+  <div class="main-container">
+    <div class="heading-container">
+      <h1 class="main-container__heading">Budget app</h1>
+      <div>
+        <button
+          mat-mini-fab
+          class="heading-container__button-spacing"
+          color="accent"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          class="heading-container__button-spacing"
+          color="accent"
+          (click)="handleSignOut()"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="options-container">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="handleNavigateWallet()"
+      >
+        Wallets
+      </button>
+      <button mat-raised-button color="primary">Transaction</button>
+      <button mat-raised-button color="primary">Overview</button>
+    </div>
+  </div>
+</ng-container>

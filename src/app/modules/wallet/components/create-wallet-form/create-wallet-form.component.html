@@ -1,0 +1,33 @@
+<form
+  class="wallet-form"
+  [formGroup]="walletForm"
+  (submit)="handleCreateWallet()"
+>
+  <h1 class="wallet-form__heading">Create Wallet</h1>
+  <mat-form-field appearance="fill">
+    <mat-label>Wallet name</mat-label>
+    <input matInput formControlName="name" type="text" />
+    <mat-error *ngIf="name?.hasError('required')"
+      >This field is <strong>required</strong></mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Wallet balance</mat-label>
+    <input matInput formControlName="balance" type="number" />
+    <mat-error *ngIf="balance?.hasError('required')"
+      >This field is <strong>required</strong></mat-error
+    >
+  </mat-form-field>
+  <button
+    class="wallet-form__input"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!walletForm.valid || isWalletLoading"
+  >
+    <mat-icon *ngIf="isWalletLoading"
+      ><mat-spinner color="accent" diameter="20"> </mat-spinner
+    ></mat-icon>
+    <span *ngIf="!isWalletLoading">Confirm</span>
+  </button>
+</form>

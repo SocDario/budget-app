@@ -1,0 +1,25 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 350px;
+  margin: auto;
+}
+
+.heading-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 80px;
+}
+
+.loading-container {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 20px;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+}

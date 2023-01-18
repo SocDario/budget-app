@@ -1,0 +1,15 @@
+.wallet-form {
+  display: grid;
+  row-gap: 10px;
+}
+
+.wallet-form__heading {
+  margin-bottom: 20px;
+}
+
+.wallet-form__input {
+  height: 50px;
+  font-size: large;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}

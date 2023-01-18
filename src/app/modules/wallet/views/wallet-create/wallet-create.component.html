@@ -1,0 +1,7 @@
+<div class="main-container">
+  <app-back-round-button></app-back-round-button>
+  <app-create-wallet-form
+    (createWallet)="onCreateWallet($event)"
+    [isWalletLoading]="(isLoadingCreateWallet$ | async)!"
+  ></app-create-wallet-form>
+</div>

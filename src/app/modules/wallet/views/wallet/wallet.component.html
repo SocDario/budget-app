@@ -1,0 +1,23 @@
+<ng-container *ngIf="isLoadingWallets$ | async; else loadingContainer">
+  <div class="loading-container">
+    <mat-icon
+      ><mat-spinner color="accent" diameter="30"> </mat-spinner
+    ></mat-icon>
+    <p>Loading your wallets, please wait...</p>
+  </div>
+</ng-container>
+<ng-template #loadingContainer>
+  <div class="main-container">
+    <ng-container *ngIf="(wallets$ | async)?.length; else createWallet">
+      <div class="heading-container">
+        <h1 class="main-container__heading">Wallets</h1>
+        <button mat-mini-fab color="accent">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #createWallet>
+      <app-wallet-create></app-wallet-create>
+    </ng-template>
+  </div>
+</ng-template>

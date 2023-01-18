@@ -19,6 +19,18 @@ const routes: Routes = [
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
     ...canActivate(redirectLoggedInToHome),
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/home/home.module').then((m) => m.HomeModule),
+    ...canActivate(redirectUnauthorizedToLogin),
+  },
+  {
+    path: AppRoutes.Wallet,
+    loadChildren: () =>
+      import('./modules/wallet/wallet.module').then((m) => m.WalletModule),
+    ...canActivate(redirectUnauthorizedToLogin),
+  },
 ];
 
 @NgModule({

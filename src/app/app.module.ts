@@ -8,9 +8,11 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthGuardModule } from '@angular/fire/compat/auth-guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../environments/environment';
 import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +25,8 @@ import { AuthModule } from './modules/auth/auth.module';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthGuardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
     SharedModule,
     AuthModule,
   ],

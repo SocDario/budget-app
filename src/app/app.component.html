@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="userId$ | async; else loadingContainer">
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-template #loadingContainer>
+  <div class="loading-container">
+    <mat-icon
+      ><mat-spinner color="accent" diameter="50"> </mat-spinner
+    ></mat-icon>
+  </div>
+</ng-template>

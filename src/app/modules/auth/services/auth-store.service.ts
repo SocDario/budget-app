@@ -9,18 +9,22 @@ import { AuthService } from './auth.service';
 
 export interface AuthStore {
   userId: string;
+  isLoadingUser: boolean;
   isSignInLoading: boolean;
   isSignUpLoading: boolean;
   isGoogleAuthenticationLoading: boolean;
   isSignOutLoading: boolean;
+  isProfileUpdateLoading: boolean;
 }
 
 const initialState: AuthStore = {
   userId: '',
+  isLoadingUser: true,
   isSignInLoading: false,
   isSignUpLoading: false,
   isGoogleAuthenticationLoading: false,
   isSignOutLoading: false,
+  isProfileUpdateLoading: false,
 };
 
 @Injectable({
@@ -28,12 +32,16 @@ const initialState: AuthStore = {
 })
 export class AuthStoreService extends Store<AuthStore> {
   userId$ = this.select((state) => state.userId);
+  isLoadingUser$ = this.select((state) => state.isLoadingUser);
   isSignInLoading$ = this.select((state) => state.isSignInLoading);
   isSignUpLoading$ = this.select((state) => state.isSignUpLoading);
   isGoogleAuthenticationLoading$ = this.select(
     (state) => state.isGoogleAuthenticationLoading
   );
   isSignOutLoading$ = this.select((state) => state.isSignOutLoading);
+  isProfileUpdateLoading$ = this.select(
+    (state) => state.isProfileUpdateLoading
+  );
 
   constructor(
     private readonly auth: AngularFireAuth,
@@ -49,6 +57,9 @@ export class AuthStoreService extends Store<AuthStore> {
           userId: user.uid,
         });
       }
+      this.setState({
+        isLoadingUser: false,
+      });
     });
   }
 
@@ -114,7 +125,6 @@ export class AuthStoreService extends Store<AuthStore> {
         this.setState({
           isGoogleAuthenticationLoading: false,
         });
-        console.log('here');
         this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
           duration: 5000,
         });

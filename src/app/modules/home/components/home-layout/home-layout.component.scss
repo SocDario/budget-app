@@ -1,0 +1,33 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 350px;
+  margin: auto;
+}
+
+.heading-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 80px;
+}
+
+.heading-container__heading {
+  margin-right: 50px;
+}
+
+.heading-container__button-spacing {
+  margin-left: 15px;
+}
+
+.options-container {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 20px;
+}
+
+.options-container__button {
+  width: 300px;
+}
