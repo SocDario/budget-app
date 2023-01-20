@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, from, tap, throwError } from 'rxjs';
 import { Store } from '../../shared/classes/store.class';
 import { UserCredentials } from '../models';
-import { ErrorTransformPipe } from '../pipes/error-transform.pipe';
+import { ErrorTransformPipe } from '../../shared/pipes/error-transform.pipe';
 import { AuthService } from './auth.service';
 
 export interface AuthStore {

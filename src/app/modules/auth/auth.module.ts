@@ -11,17 +11,16 @@ import { SignInComponent } from './views/sign-in/sign-in.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { GoogleButtonComponent } from './components/google-button/google-button.component';
-import { SharedModule } from '../shared/shared.module';
-import { ErrorTransformPipe } from './pipes/error-transform.pipe';
+import { ErrorTransformPipe } from '../shared/pipes/error-transform.pipe';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
+import { DisableControlDirective } from '../shared/directives/disable-control.directive';
 
 @NgModule({
   declarations: [
     SignInComponent,
     SignInFormComponent,
     GoogleButtonComponent,
-    ErrorTransformPipe,
     SignUpFormComponent,
     SignUpComponent,
   ],
@@ -35,7 +34,7 @@ import { SignUpComponent } from './views/sign-up/sign-up.component';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatButtonModule,
-    SharedModule,
+    DisableControlDirective,
   ],
   providers: [ErrorTransformPipe],
 })

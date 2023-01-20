@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Wallet } from '../../models';
 
 @Component({
   selector: 'app-wallet-card',
   templateUrl: './wallet-card.component.html',
-  styleUrls: ['./wallet-card.component.scss']
+  styleUrls: ['./wallet-card.component.scss'],
 })
-export class WalletCardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class WalletCardComponent {
+  @Input() wallet?: Wallet;
+  balanceShown? = true;
 }

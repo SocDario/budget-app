@@ -8,8 +8,8 @@ import { UserCredentials } from '../../models';
   styleUrls: ['./sign-in-form.component.scss'],
 })
 export class SignInFormComponent {
-  @Input() isSignInLoading?: boolean;
-  @Input() isGoogleAuthenticationLoading: boolean = false;
+  @Input() isSignInLoading = false;
+  @Input() isGoogleAuthenticationLoading = false;
   @Output() googleAuthentication = new EventEmitter();
   @Output() formSubmited = new EventEmitter<UserCredentials>();
   passwordShown = false;

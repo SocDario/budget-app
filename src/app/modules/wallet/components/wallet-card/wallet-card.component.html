@@ -1,1 +1,12 @@
-<p>wallet-card works!</p>
+<div class="wallet-card">
+  <h4>{{ wallet?.name }}</h4>
+  <div class="wallet-card__balance" [ngSwitch]="balanceShown">
+    <p class="wallet-card__balance-text" *ngSwitchCase="true">
+      {{ wallet?.currentBalance! | priceTransform }}
+    </p>
+    <p class="waller-card__balance-text" *ngSwitchCase="false">******</p>
+    <mat-icon matSuffix (click)="balanceShown = !balanceShown">{{
+      balanceShown ? 'visibility' : 'visibility_off'
+    }}</mat-icon>
+  </div>
+</div>

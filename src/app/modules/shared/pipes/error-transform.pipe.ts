@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { FirebaseError } from 'firebase/app';
-import { FIREBASE_AUTH_ERRORS } from '../constants';
+import { FIREBASE_AUTH_ERRORS } from '../../auth/constants';
 
 @Pipe({
   name: 'errorTransform',

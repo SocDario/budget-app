@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, from, tap, throwError } from 'rxjs';
-import { ErrorTransformPipe } from '../../auth/pipes/error-transform.pipe';
+import { ErrorTransformPipe } from '../../shared/pipes/error-transform.pipe';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
 import { Store } from '../../shared/classes/store.class';
 import { Wallet } from '../models';

@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ErrorTransformPipe } from '../auth/pipes/error-transform.pipe';
+import { ErrorTransformPipe } from '../shared/pipes/error-transform.pipe';
 import { PriceTransformPipe } from '../shared/pipes/price-transform.pipe';
 import { CreateWalletFormComponent } from './components/create-wallet-form/create-wallet-form.component';
 import { WalletCreateComponent } from './views/wallet-create/wallet-create.component';

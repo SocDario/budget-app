@@ -7,7 +7,7 @@ import { AuthStoreService } from './modules/auth/services/auth-store.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  userId$ = this.authStoreService.userId$;
+  userId$ = this.authStoreService.isLoadingUser$;
 
   constructor(private readonly authStoreService: AuthStoreService) {}
 }

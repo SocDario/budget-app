@@ -4,6 +4,7 @@ import { NgControl } from '@angular/forms';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '([formControlName], [formControl])[disabledControl]',
+  standalone: true,
 })
 export class DisableControlDirective {
   // eslint-disable-next-line accessor-pairs
