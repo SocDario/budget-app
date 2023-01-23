@@ -11,7 +11,7 @@
     <ng-container *ngIf="(wallets$ | async)?.length; else createWallet">
       <div class="heading-container">
         <h1 class="main-container__heading">Wallets</h1>
-        <button mat-mini-fab color="accent">
+        <button mat-mini-fab color="accent" (click)="navigateCreateWallet()">
           <mat-icon>add</mat-icon>
         </button>
       </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStoreService } from 'src/app/modules/auth/services/auth-store.service';
+import { AppRoutes } from 'src/app/modules/shared/enums';
 import { Wallet } from '../../models';
 import { WalletStoreService } from '../../services/wallet-store.service';
 
@@ -12,11 +14,17 @@ export class WalletComponent implements OnInit {
   wallets$ = this.walletStoreService.wallets$;
   isLoadingWallets$ = this.walletStoreService.isLoadingWallets$;
 
-  constructor(private readonly walletStoreService: WalletStoreService) {}
+  constructor(
+    private readonly walletStoreService: WalletStoreService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.walletStoreService.getUserWallets().subscribe((data) => {
-      console.log(data);
-    });
+    this.walletStoreService.getUserWallets().subscribe();
+  }
+
+  navigateCreateWallet() {
+    this.router.navigate([AppRoutes.CreateWallet], { relativeTo: this.route });
   }
 }

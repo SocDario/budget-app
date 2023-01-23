@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { switchMap, tap } from 'rxjs';
-import { AuthStoreService } from 'src/app/modules/auth/services/auth-store.service';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
 import { Wallet } from '../../models';
 import { WalletStoreService } from '../../services/wallet-store.service';
 
@@ -14,25 +13,16 @@ export class WalletCreateComponent {
 
   constructor(
     private readonly walletStoreService: WalletStoreService,
-    private readonly authStoreService: AuthStoreService
+    private readonly location: Location
   ) {}
 
   onCreateWallet(wallet: Wallet) {
-    // this.userId$
-    //   .pipe(
-    //     switchMap((userId) => {
-    //       return this.walletStoreService.createWallet({
-    //         ...wallet,
-    //         userId: userId,
-    //       });
-    //     })
-    //   )
-    //   .subscribe();
-
     this.walletStoreService
       .createWallet({
         ...wallet,
       })
-      .subscribe();
+      .subscribe(() => {
+        this.location.back();
+      });
   }
 }
