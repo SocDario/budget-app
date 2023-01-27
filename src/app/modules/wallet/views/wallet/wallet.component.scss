@@ -1,17 +1,17 @@
 .main-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100%;
   width: 350px;
   margin: auto;
-}
 
-.heading-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 20px 0 30px;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 50px 0 30px;
+  }
 }
 
 .loading-container {

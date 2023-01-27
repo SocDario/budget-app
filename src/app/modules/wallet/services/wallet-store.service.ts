@@ -11,15 +11,15 @@ import { WalletActionsService } from './wallet-actions.service';
 interface WalletStore {
   wallets: Wallet[];
   isLoadingWallets: boolean;
-  walletsError: string;
   isLoadingCreateWallet: boolean;
+  isLoadingWalletDelete: boolean;
 }
 
 const initialsValues: WalletStore = {
   wallets: [],
   isLoadingWallets: false,
-  walletsError: '',
   isLoadingCreateWallet: false,
+  isLoadingWalletDelete: false,
 };
 
 @Injectable({
@@ -29,9 +29,9 @@ export class WalletStoreService extends Store<WalletStore> {
   userId?: string;
   wallets$ = this.select((state) => state.wallets);
   isLoadingWallets$ = this.select((state) => state.isLoadingWallets);
-  walletsError$ = this.select((state) => state.walletsError);
 
   isLoadingCreateWallet$ = this.select((state) => state.isLoadingCreateWallet);
+  isLoadingWalletDelete$ = this.select((state) => state.isLoadingWalletDelete);
 
   constructor(
     private readonly walletActionService: WalletActionsService,
@@ -49,33 +49,36 @@ export class WalletStoreService extends Store<WalletStore> {
       .subscribe();
   }
 
-  getUserWallets() {
-    this.setState({
-      isLoadingWallets: true,
+  handleError(error: string) {
+    this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
+      duration: 5000,
     });
-    return this.walletActionService
-      .getAllWallets(this.userId!)
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        tap((wallets) => {
-          this.setState({
-            wallets,
-            isLoadingWallets: false,
+    return throwError(() => new Error(this.errorTransform.transform(error)));
+  }
+
+  getUserWallets() {
+    return this.walletActionService.getAllWallets(this.userId!).onSnapshot(
+      (querySnapshot) => {
+        let wallets: Wallet[] = [];
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          wallets.push({
+            id: doc.id,
+            ...data,
           });
-        }),
-        catchError((error) => {
-          this.setState({
-            isLoadingCreateWallet: false,
-          });
-          console.log('error');
-          this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-            duration: 5000,
-          });
-          return throwError(
-            () => new Error(this.errorTransform.transform(error))
-          );
-        })
-      );
+        });
+        this.setState({
+          wallets: wallets,
+          isLoadingWallets: false,
+        });
+      },
+      ({ message }) => {
+        this.setState({
+          isLoadingWallets: false,
+        });
+        this.handleError(message);
+      }
+    );
   }
 
   createWallet(wallet: Wallet) {
@@ -97,12 +100,29 @@ export class WalletStoreService extends Store<WalletStore> {
         this.setState({
           isLoadingCreateWallet: false,
         });
-        this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-          duration: 5000,
+        return this.handleError(error);
+      })
+    );
+  }
+
+  deleteWallet(documentId: string) {
+    this.setState({
+      isLoadingWalletDelete: true,
+    });
+    return from(this.walletActionService.deleteWallet(documentId)).pipe(
+      tap(() => {
+        this.setState({
+          isLoadingWalletDelete: false,
         });
-        return throwError(
-          () => new Error(this.errorTransform.transform(error))
-        );
+        this.snackBar.open('Wallet successfully deleted', 'Cancel', {
+          duration: 4000,
+        });
+      }),
+      catchError((error) => {
+        this.setState({
+          isLoadingWalletDelete: false,
+        });
+        return this.handleError(error);
       })
     );
   }

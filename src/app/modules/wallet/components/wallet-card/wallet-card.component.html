@@ -1,12 +1,23 @@
 <div class="wallet-card">
-  <h4>{{ wallet?.name }}</h4>
-  <div class="wallet-card__balance" [ngSwitch]="balanceShown">
-    <p class="wallet-card__balance-text" *ngSwitchCase="true">
+  <div class="wallet-card__header">
+    <h4>{{ wallet?.name }}</h4>
+    <button
+      mat-flat-button
+      class="wallet-card__button"
+      (click)="onWalletDelete(wallet?.id!)"
+    >
+      <mat-icon color="accent">delete</mat-icon>
+    </button>
+  </div>
+  <div class="wallet-card__body" [ngSwitch]="balanceShown">
+    <p *ngSwitchCase="true">
       {{ wallet?.currentBalance! | priceTransform }}
     </p>
-    <p class="waller-card__balance-text" *ngSwitchCase="false">******</p>
-    <mat-icon matSuffix (click)="balanceShown = !balanceShown">{{
-      balanceShown ? 'visibility' : 'visibility_off'
-    }}</mat-icon>
+    <p class="waller-card__body__text" *ngSwitchCase="false">******</p>
+    <button mat-flat-button class="wallet-card__button">
+      <mat-icon matSuffix (click)="balanceShown = !balanceShown">{{
+        balanceShown ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
   </div>
 </div>
