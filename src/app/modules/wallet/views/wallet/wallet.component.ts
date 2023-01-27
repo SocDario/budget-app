@@ -13,6 +13,7 @@ import { WalletStoreService } from '../../services/wallet-store.service';
 export class WalletComponent implements OnInit {
   wallets$ = this.walletStoreService.wallets$;
   isLoadingWallets$ = this.walletStoreService.isLoadingWallets$;
+  isLoadingDeleteWallet$ = this.walletStoreService.isLoadingWalletDelete$;
 
   constructor(
     private readonly walletStoreService: WalletStoreService,
@@ -21,7 +22,11 @@ export class WalletComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.walletStoreService.getUserWallets().subscribe();
+    this.walletStoreService.getUserWallets();
+  }
+
+  handleWalletDelete(documentId: string) {
+    this.walletStoreService.deleteWallet(documentId).subscribe();
   }
 
   navigateCreateWallet() {

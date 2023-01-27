@@ -10,8 +10,8 @@
   <div class="main-container">
     <ng-container *ngIf="(wallets$ | async)?.length; else createWallet">
       <app-back-round-button></app-back-round-button>
-      <div class="heading-container">
-        <h1 class="main-container__heading">Wallets</h1>
+      <div class="main-container__header">
+        <h1>Wallets</h1>
         <button mat-mini-fab color="accent" (click)="navigateCreateWallet()">
           <mat-icon>add</mat-icon>
         </button>
@@ -19,6 +19,7 @@
       <app-wallet-card
         *ngFor="let wallet of wallets$ | async"
         [wallet]="wallet"
+        (walletDelete)="handleWalletDelete($event)"
       ></app-wallet-card>
     </ng-container>
     <ng-template #createWallet>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Wallet } from '../../models';
 
 @Component({
@@ -8,5 +8,10 @@ import { Wallet } from '../../models';
 })
 export class WalletCardComponent {
   @Input() wallet?: Wallet;
+  @Output() walletDelete = new EventEmitter<string>();
   balanceShown? = true;
+
+  onWalletDelete(documentId: string) {
+    this.walletDelete.emit(documentId);
+  }
 }

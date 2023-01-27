@@ -4,17 +4,31 @@
   margin: 10px 0;
   padding: 20px;
   border-radius: 5px;
-}
 
-.wallet-card__balance {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px 0 0;
-}
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.wallet-card__balance-header {
-  font-weight: 500;
-  font-size: large;
-  text-align: center;
+  &__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 0;
+
+    &__text {
+      font-weight: 500;
+      font-size: large;
+      text-align: center;
+    }
+  }
+
+  &__button {
+    display: flex;
+    padding: 0;
+    border: none;
+    min-width: 0;
+    background-color: transparent;
+  }
 }
