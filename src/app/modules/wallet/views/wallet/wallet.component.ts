@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthStoreService } from 'src/app/modules/auth/services/auth-store.service';
 import { AppRoutes } from 'src/app/modules/shared/enums';
-import { Wallet } from '../../models';
 import { WalletStoreService } from '../../services/wallet-store.service';
 
 @Component({

@@ -23,7 +23,9 @@
       ></app-wallet-card>
     </ng-container>
     <ng-template #createWallet>
-      <app-wallet-create></app-wallet-create>
+      <div class="create-wallet-container">
+        <app-wallet-create [shouldNavigateBack]="false"></app-wallet-create>
+      </div>
     </ng-template>
   </div>
 </ng-template>

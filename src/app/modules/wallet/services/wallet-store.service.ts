@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, from, tap, throwError } from 'rxjs';
 import { ErrorTransformPipe } from '../../shared/pipes/error-transform.pipe';
@@ -57,6 +56,9 @@ export class WalletStoreService extends Store<WalletStore> {
   }
 
   getUserWallets() {
+    this.setState({
+      isLoadingWallets: true,
+    });
     return this.walletActionService.getAllWallets(this.userId!).onSnapshot(
       (querySnapshot) => {
         let wallets: Wallet[] = [];
