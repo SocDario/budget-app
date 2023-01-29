@@ -6,9 +6,9 @@ import { Store } from '../../shared/classes/store.class';
 import { UserCredentials } from '../models';
 import { ErrorTransformPipe } from '../../shared/pipes/error-transform.pipe';
 import { AuthService } from './auth.service';
+import { UtilsService } from '../../shared/services/utils.service';
 
 export interface AuthStore {
-  userId: string;
   isLoadingUser: boolean;
   isSignInLoading: boolean;
   isSignUpLoading: boolean;
@@ -18,7 +18,6 @@ export interface AuthStore {
 }
 
 const initialState: AuthStore = {
-  userId: '',
   isLoadingUser: true,
   isSignInLoading: false,
   isSignUpLoading: false,
@@ -31,7 +30,7 @@ const initialState: AuthStore = {
   providedIn: 'root',
 })
 export class AuthStoreService extends Store<AuthStore> {
-  userId$ = this.select((state) => state.userId);
+  userId?: string;
   isLoadingUser$ = this.select((state) => state.isLoadingUser);
   isSignInLoading$ = this.select((state) => state.isSignInLoading);
   isSignUpLoading$ = this.select((state) => state.isSignUpLoading);
@@ -46,16 +45,14 @@ export class AuthStoreService extends Store<AuthStore> {
   constructor(
     private readonly auth: AngularFireAuth,
     private readonly authService: AuthService,
-    private readonly snackBar: MatSnackBar,
-    private readonly errorTransform: ErrorTransformPipe
+    private readonly utilsService: UtilsService
   ) {
     super(initialState);
-
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.setState({
-          userId: user.uid,
-        });
+        this.userId = user.uid;
+      } else {
+        this.userId = undefined;
       }
       this.setState({
         isLoadingUser: false,
@@ -77,12 +74,7 @@ export class AuthStoreService extends Store<AuthStore> {
         this.setState({
           isSignInLoading: false,
         });
-        this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-          duration: 5000,
-        });
-        return throwError(
-          () => new Error(this.errorTransform.transform(error))
-        );
+        return this.utilsService.handleError(error);
       })
     );
   }
@@ -101,12 +93,7 @@ export class AuthStoreService extends Store<AuthStore> {
         this.setState({
           isSignUpLoading: false,
         });
-        this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-          duration: 5000,
-        });
-        return throwError(
-          () => new Error(this.errorTransform.transform(error))
-        );
+        return this.utilsService.handleError(error);
       })
     );
   }
@@ -125,12 +112,7 @@ export class AuthStoreService extends Store<AuthStore> {
         this.setState({
           isGoogleAuthenticationLoading: false,
         });
-        this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-          duration: 5000,
-        });
-        return throwError(
-          () => new Error(this.errorTransform.transform(error))
-        );
+        return this.utilsService.handleError(error);
       })
     );
   }
@@ -149,12 +131,7 @@ export class AuthStoreService extends Store<AuthStore> {
         this.setState({
           isSignOutLoading: false,
         });
-        this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-          duration: 5000,
-        });
-        return throwError(
-          () => new Error(this.errorTransform.transform(error))
-        );
+        return this.utilsService.handleError(error);
       })
     );
   }

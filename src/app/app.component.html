@@ -1,4 +1,4 @@
-<ng-container *ngIf="!(userId$ | async); else loadingContainer">
+<ng-container *ngIf="!(isLoadingUser$ | async); else loadingContainer">
   <router-outlet></router-outlet>
 </ng-container>
 <ng-template #loadingContainer>
