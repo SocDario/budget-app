@@ -1,0 +1,23 @@
+<form [formGroup]="transactionForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Wallet</mat-label>
+    <mat-select formControlName="walletId" required>
+      <mat-option>--</mat-option>
+      <mat-option
+        *ngFor="let wallet of wallets"
+        [value]="wallet.id"
+        (click)="handleSetWalletBalance(wallet)"
+      >
+        {{
+          wallet.name + ' (' + (wallet.currentBalance | priceTransform) + ')'
+        }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="walletId?.hasError('required')"
+      >Please select wallet</mat-error
+    >
+    <mat-hint *ngIf="selectedWalletBalance">{{
+      'Wallet balance: ' + selectedWalletBalance
+    }}</mat-hint>
+  </mat-form-field>
+</form>

@@ -1,0 +1,17 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 350px;
+  height: 100%;
+  margin: auto;
+  padding: 20px;
+
+  &__header {
+    margin-bottom: 30px;
+  }
+
+  &__button {
+    margin-bottom: 20px;
+  }
+}

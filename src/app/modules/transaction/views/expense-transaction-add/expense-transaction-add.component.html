@@ -1,0 +1,6 @@
+<div class="main-container">
+  <app-back-round-button></app-back-round-button>
+  <app-expense-transaction-form
+    [wallets]="(wallets$ | async) || []"
+  ></app-expense-transaction-form>
+</div>
