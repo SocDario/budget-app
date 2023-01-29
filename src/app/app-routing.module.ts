@@ -31,6 +31,14 @@ const routes: Routes = [
       import('./modules/wallet/wallet.module').then((m) => m.WalletModule),
     ...canActivate(redirectUnauthorizedToLogin),
   },
+  {
+    path: AppRoutes.Transactions,
+    loadChildren: () =>
+      import('./modules/transaction/transaction.module').then(
+        (m) => m.TransactionModule
+      ),
+    ...canActivate(redirectUnauthorizedToLogin),
+  },
 ];
 
 @NgModule({

@@ -22,4 +22,8 @@ export class HomeComponent {
   onNavigateWallet() {
     this.router.navigate([AppRoutes.Wallet]);
   }
+
+  onNavigateTransactions() {
+    this.router.navigate([AppRoutes.Transactions]);
+  }
 }

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, from, tap, throwError } from 'rxjs';
-import { ErrorTransformPipe } from '../../shared/pipes/error-transform.pipe';
+import { catchError, from, tap } from 'rxjs';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
 import { Store } from '../../shared/classes/store.class';
+import { UtilsService } from '../../shared/services/utils.service';
 import { Wallet } from '../models';
 import { WalletActionsService } from './wallet-actions.service';
 
@@ -35,24 +34,10 @@ export class WalletStoreService extends Store<WalletStore> {
   constructor(
     private readonly walletActionService: WalletActionsService,
     private readonly authStoreService: AuthStoreService,
-    private readonly errorTransform: ErrorTransformPipe,
-    private readonly snackBar: MatSnackBar
+    private readonly utilsService: UtilsService
   ) {
     super(initialsValues);
-    this.authStoreService.userId$
-      .pipe(
-        tap((userId) => {
-          this.userId = userId;
-        })
-      )
-      .subscribe();
-  }
-
-  handleError(error: string) {
-    this.snackBar.open(this.errorTransform.transform(error), 'Cancel', {
-      duration: 5000,
-    });
-    return throwError(() => new Error(this.errorTransform.transform(error)));
+    this.userId = this.authStoreService.userId;
   }
 
   getUserWallets() {
@@ -78,7 +63,7 @@ export class WalletStoreService extends Store<WalletStore> {
         this.setState({
           isLoadingWallets: false,
         });
-        this.handleError(message);
+        this.utilsService.handleError(message);
       }
     );
   }
@@ -94,15 +79,13 @@ export class WalletStoreService extends Store<WalletStore> {
         this.setState({
           isLoadingCreateWallet: false,
         });
-        this.snackBar.open('Wallet successfully created', 'Cancel', {
-          duration: 4000,
-        });
+        this.utilsService.handleShowSnackbar('Wallet successfully created');
       }),
       catchError((error) => {
         this.setState({
           isLoadingCreateWallet: false,
         });
-        return this.handleError(error);
+        return this.utilsService.handleError(error);
       })
     );
   }
@@ -116,15 +99,13 @@ export class WalletStoreService extends Store<WalletStore> {
         this.setState({
           isLoadingWalletDelete: false,
         });
-        this.snackBar.open('Wallet successfully deleted', 'Cancel', {
-          duration: 4000,
-        });
+        this.utilsService.handleShowSnackbar('Wallet successfully deleted');
       }),
       catchError((error) => {
         this.setState({
           isLoadingWalletDelete: false,
         });
-        return this.handleError(error);
+        return this.utilsService.handleError(error);
       })
     );
   }

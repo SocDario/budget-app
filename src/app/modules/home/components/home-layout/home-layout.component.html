@@ -28,7 +28,13 @@
       >
         Wallets
       </button>
-      <button mat-raised-button color="primary">Transactions</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="handleNavigateTransactions()"
+      >
+        Transactions
+      </button>
       <button mat-raised-button color="primary">Overview</button>
     </div>
   </div>

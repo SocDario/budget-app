@@ -9,6 +9,7 @@ export class HomeLayoutComponent {
   @Input() username?: string;
   @Output() signOut = new EventEmitter();
   @Output() navigateWallet = new EventEmitter();
+  @Output() navigateTransactions = new EventEmitter();
 
   handleSignOut() {
     this.signOut.emit();
@@ -16,5 +17,9 @@ export class HomeLayoutComponent {
 
   handleNavigateWallet() {
     this.navigateWallet.emit();
+  }
+
+  handleNavigateTransactions() {
+    this.navigateTransactions.emit();
   }
 }
