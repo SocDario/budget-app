@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserCredentials } from '../models';
 import { GoogleAuthProvider } from 'firebase/auth';
-import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
