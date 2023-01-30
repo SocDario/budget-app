@@ -20,7 +20,7 @@ export class WalletComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.walletStoreService.getUserWallets();
+    this.walletStoreService.getUserWallets().subscribe();
   }
 
   handleWalletDelete(documentId: string) {

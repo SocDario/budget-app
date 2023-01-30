@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MatIconModule } from '@angular/material/icon';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressSpinnerModule,
     SharedModule,
     AuthModule,
+    TransactionModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

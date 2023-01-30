@@ -15,7 +15,7 @@ export class CreateWalletFormComponent {
 
   walletForm = this.fb.nonNullable.group({
     name: ['', [Validators.required]],
-    balance: [0, [Validators.required]],
+    balance: [undefined, [Validators.required]],
   });
 
   constructor(private readonly fb: FormBuilder) {}
