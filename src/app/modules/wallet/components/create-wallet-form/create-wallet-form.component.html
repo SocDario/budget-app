@@ -4,22 +4,23 @@
   (submit)="handleCreateWallet()"
 >
   <h1 class="wallet-form__heading">Create Wallet</h1>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="outline">
     <mat-label>Wallet name</mat-label>
     <input matInput formControlName="name" type="text" />
     <mat-error *ngIf="name?.hasError('required')"
       >This field is <strong>required</strong></mat-error
     >
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="outline">
     <mat-label>Wallet balance</mat-label>
-    <input matInput formControlName="balance" type="number" />
+    <input matInput formControlName="balance" type="number" step="0.01" />
+    <mat-icon class="wallet-form__icon" matSuffix>euro</mat-icon>
     <mat-error *ngIf="balance?.hasError('required')"
       >This field is <strong>required</strong></mat-error
     >
   </mat-form-field>
   <button
-    class="wallet-form__input"
+    class="wallet-form__button"
     mat-raised-button
     color="primary"
     type="submit"

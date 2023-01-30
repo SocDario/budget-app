@@ -11,6 +11,8 @@ interface WalletStore {
   isLoadingWallets: boolean;
   isLoadingCreateWallet: boolean;
   isLoadingWalletDelete: boolean;
+  isLoadingWalletUpdate: boolean;
+  walletUpdateError: string;
 }
 
 const initialsValues: WalletStore = {
@@ -18,6 +20,8 @@ const initialsValues: WalletStore = {
   isLoadingWallets: false,
   isLoadingCreateWallet: false,
   isLoadingWalletDelete: false,
+  isLoadingWalletUpdate: false,
+  walletUpdateError: '',
 };
 
 @Injectable({
@@ -30,6 +34,9 @@ export class WalletStoreService extends Store<WalletStore> {
 
   isLoadingCreateWallet$ = this.select((state) => state.isLoadingCreateWallet);
   isLoadingWalletDelete$ = this.select((state) => state.isLoadingWalletDelete);
+
+  isLoadingWalletUpdate$ = this.select((state) => state.isLoadingWalletUpdate);
+  walletUpdateError$ = this.select((state) => state.walletUpdateError);
 
   constructor(
     private readonly walletActionService: WalletActionsService,
@@ -44,27 +51,19 @@ export class WalletStoreService extends Store<WalletStore> {
     this.setState({
       isLoadingWallets: true,
     });
-    return this.walletActionService.getAllWallets(this.userId!).onSnapshot(
-      (querySnapshot) => {
-        let wallets: Wallet[] = [];
-        querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          wallets.push({
-            id: doc.id,
-            ...data,
-          });
-        });
+    return this.walletActionService.getAllWallets(this.userId!).pipe(
+      tap((wallets) => {
         this.setState({
           wallets: wallets,
           isLoadingWallets: false,
         });
-      },
-      ({ message }) => {
+      }),
+      catchError((error) => {
         this.setState({
           isLoadingWallets: false,
         });
-        this.utilsService.handleError(message);
-      }
+        return this.utilsService.handleError(error);
+      })
     );
   }
 
@@ -84,6 +83,28 @@ export class WalletStoreService extends Store<WalletStore> {
       catchError((error) => {
         this.setState({
           isLoadingCreateWallet: false,
+        });
+        return this.utilsService.handleError(error);
+      })
+    );
+  }
+
+  updateWallet(documentId: string, wallet: Wallet, showSnackbar?: boolean) {
+    this.setState({
+      isLoadingWalletUpdate: true,
+    });
+    return from(this.walletActionService.updateWallet(documentId, wallet)).pipe(
+      tap(() => {
+        this.setState({
+          isLoadingWalletUpdate: false,
+        });
+        showSnackbar &&
+          this.utilsService.handleShowSnackbar('Wallet successfully updated');
+      }),
+      catchError((error) => {
+        this.setState({
+          isLoadingWalletUpdate: false,
+          walletUpdateError: 'An error occured while updating wallet',
         });
         return this.utilsService.handleError(error);
       })

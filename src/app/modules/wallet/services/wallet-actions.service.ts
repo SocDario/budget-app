@@ -16,7 +16,9 @@ export class WalletActionsService {
   }
 
   getAllWallets(userId: string) {
-    return this.walletsCollection.ref.where('userId', '==', userId);
+    return this.firestore
+      .collection<Wallet>('wallets', (ref) => ref.where('userId', '==', userId))
+      .valueChanges({ idField: 'id' });
   }
 
   createWallet(wallet: Wallet) {

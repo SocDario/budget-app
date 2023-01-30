@@ -1,3 +1,6 @@
+@import "./scss/colors.scss";
+@import "./scss/material.overrides.scss";
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,4 +15,14 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #f1f1f4;
+}
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
 }
