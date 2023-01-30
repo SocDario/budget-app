@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppRoutes } from 'src/app/modules/shared/enums';
-import { CategoryStoreService } from '../../services/category-store.service';
 
 @Component({
   selector: 'app-transaction-home',

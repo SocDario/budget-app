@@ -4,7 +4,7 @@ import { AuthStoreService } from '../../auth/services/auth-store.service';
 import { ExpenseTransaction, IncomeTransaction } from '../models';
 
 export enum TransactionCollections {
-  Transaction = 'transaction',
+  Transaction = 'transactions',
   Expenses = 'expenses',
   Incomes = 'incomes',
 }

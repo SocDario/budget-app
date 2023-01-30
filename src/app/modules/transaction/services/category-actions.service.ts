@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
 import { Category, CategoryType } from '../models/Category';
 
@@ -17,15 +20,16 @@ enum UserSettingsCollection {
 })
 export class CategoryActionsService {
   userId?: string;
-  userSettingsCollection = this.firestore
-    .collection(UserSettingsCollection.UserProfileSettings)
-    .doc(this.userId);
+  userSettingsCollection: AngularFirestoreDocument;
 
   constructor(
     private readonly firestore: AngularFirestore,
     private readonly authStoreSerivce: AuthStoreService
   ) {
     this.userId = this.authStoreSerivce.userId;
+    this.userSettingsCollection = this.firestore
+      .collection(UserSettingsCollection.UserProfileSettings)
+      .doc(this.userId);
   }
 
   resolveUserCategoryCollection(categoryType: CategoryType) {

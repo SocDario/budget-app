@@ -1,6 +1,34 @@
-<div class="main-container">
+<ng-container
+  *ngIf="
+    (isLoadingWalletUpdate$ | async)! ||
+      (isLoadingCreateTransaction$ | async)! ||
+      (isLoadingWallets$ | async);
+    else showContent
+  "
+>
+  <div class="loading-container">
+    <mat-spinner color="accent" diameter="50"> </mat-spinner>
+    <p class="loading-container__text">Loading, please wait...</p>
+  </div>
+</ng-container>
+<ng-template #showContent>
   <app-back-round-button></app-back-round-button>
-  <app-expense-transaction-form
-    [wallets]="(wallets$ | async) || []"
-  ></app-expense-transaction-form>
-</div>
+  <ng-container *ngIf="(wallets$ | async)?.length; else noWalletsContainer">
+    <div class="main-container">
+      <app-expense-transaction-form
+        [wallets]="(wallets$ | async)!"
+        [categories]="(categories$ | async)!"
+        (formSubmited)="onFormSubmit($event)"
+      ></app-expense-transaction-form>
+    </div>
+  </ng-container>
+  <ng-template #noWalletsContainer>
+    <div class="main-container main-container__center">
+      <mat-icon class="main-container__icon">credit_card_off</mat-icon>
+      <p>
+        No wallets found, please create one before you are able to make
+        transaction
+      </p>
+    </div>
+  </ng-template>
+</ng-template>

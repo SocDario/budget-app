@@ -6,9 +6,11 @@ export interface IncomeTransaction {
   category: string;
   subcategory: string;
   amount: number;
-  description?: string;
-  transactionFrom?: string;
   date: Timestamp;
+  recurringTransaction: boolean;
+  location: string | null;
+  description: string | null;
+  transactionFrom: string | null;
 }
 
 export interface ExpenseTransaction {
@@ -17,8 +19,9 @@ export interface ExpenseTransaction {
   category: string;
   subcategory: string;
   amount: number;
-  description?: string;
-  location?: string;
-  transactionTo?: string;
   date: Timestamp;
+  recurringTransaction: boolean;
+  description: string | null;
+  location: string | null;
+  transactionTo: string | null;
 }
