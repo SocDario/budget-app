@@ -1,0 +1,46 @@
+$app-primary: (
+  50: #e1e4e9,
+  100: #b4bcc8,
+  200: #828fa4,
+  300: #50627f,
+  400: #2b4063,
+  500: #051e48,
+  600: #041a41,
+  700: #041638,
+  800: #031230,
+  900: #010a21,
+  A100: #5d76ff,
+  A200: #2a4aff,
+  A400: #0025f6,
+  A700: #0021dd,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #ffffff,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$app-ui: (
+  border: rgba(#051e48, 0.25),
+);
+
+$app-status: (
+  red: #bf0101,
+  orange: #ec8a30,
+  green: #40b124,
+);
+
+$app-ui-disabled-text: (
+  default: rgba(#000000, 0.3),
+);
