@@ -2,57 +2,59 @@ import { Injectable } from '@angular/core';
 import { catchError, from, tap } from 'rxjs';
 import { Store } from '../../shared/classes/store.class';
 import { UtilsService } from '../../shared/services/utils.service';
-import { ExpenseTransaction, IncomeTransaction } from '../models';
+import {
+  TransactionData,
+  TransactionType,
+  WalletToWalletTransactionData,
+} from '../models';
 import { TransactionActionsService } from './transaction-actions.service';
 
 interface TransactionStore {
-  incomeTransactions: IncomeTransaction[];
-  isLoadingIncomeTransactions: boolean;
-  incomeTransactionsDataError: string;
-  expenseTransactions: ExpenseTransaction[];
-  isLoadingExpenseTransactions: boolean;
-  expenseTransactionsDataError: string;
+  transactions: TransactionData[];
+  isLoadingTransactions: boolean;
+  transactionsDataError: string;
   isLoadingCreateTransaction: boolean;
   createTransactionError: string;
   isLoadingDeleteTransaction: boolean;
   deleteTransactionError: string;
   isLoadingUpdateTransaction: boolean;
   updateTransactionError: string;
+  walletToWalletTransactions: WalletToWalletTransactionData[];
+  isLoadingWalletToWalletTransaction: boolean;
+  walletToWalletTransactionError: string;
 }
 
 const initialValues: TransactionStore = {
-  incomeTransactions: [],
-  isLoadingIncomeTransactions: false,
-  incomeTransactionsDataError: '',
-  expenseTransactions: [],
-  isLoadingExpenseTransactions: false,
-  expenseTransactionsDataError: '',
+  transactions: [],
+  isLoadingTransactions: false,
+  transactionsDataError: '',
   isLoadingCreateTransaction: false,
   createTransactionError: '',
   isLoadingDeleteTransaction: false,
   deleteTransactionError: '',
   isLoadingUpdateTransaction: false,
   updateTransactionError: '',
+  walletToWalletTransactions: [],
+  isLoadingWalletToWalletTransaction: false,
+  walletToWalletTransactionError: '',
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionStoreService extends Store<TransactionStore> {
-  incomeTransactions$ = this.select((state) => state.incomeTransactions);
-  isLoadingIncomeTransactions$ = this.select(
-    (state) => state.isLoadingIncomeTransactions
-  );
-  incomeTransactionsDataError$ = this.select(
-    (state) => state.incomeTransactionsDataError
-  );
+  transactions$ = this.select((state) => state.transactions);
+  isLoadingTransactions$ = this.select((state) => state.isLoadingTransactions);
+  transactionsDataError$ = this.select((state) => state.transactionsDataError);
 
-  expenseTransactions$ = this.select((state) => state.expenseTransactions);
-  isLoadingExpenseTransactions$ = this.select(
-    (state) => state.isLoadingExpenseTransactions
+  walletToWalletTransactions$ = this.select(
+    (state) => state.walletToWalletTransactions
   );
-  expenseTransactionsDataError$ = this.select(
-    (state) => state.expenseTransactionsDataError
+  isLoadingWalletToWalletTransaction$ = this.select(
+    (state) => state.isLoadingWalletToWalletTransaction
+  );
+  walletToWalletTransactionError$ = this.select(
+    (state) => state.walletToWalletTransactionError
   );
 
   isLoadingCreateTransaction$ = this.select(
@@ -81,33 +83,41 @@ export class TransactionStoreService extends Store<TransactionStore> {
     super(initialValues);
   }
 
-  getExpensesTransactions() {
+  getTransactions(transactionType: TransactionType) {
     this.setState({
-      isLoadingExpenseTransactions: true,
+      isLoadingTransactions: true,
     });
-    return this.transactionsActionsService.getExpenseTransactions().pipe(
-      tap((expenseTransactions) => {
-        this.setState({
-          isLoadingExpenseTransactions: false,
-          expenseTransactions,
-        });
-      }),
-      catchError((error) => {
-        this.setState({
-          isLoadingExpenseTransactions: false,
-          expenseTransactionsDataError: error,
-        });
-        return this.utilsService.handleError(error);
-      })
-    );
+    return this.transactionsActionsService
+      .getTransactions(transactionType)
+      .pipe(
+        tap((transactions) => {
+          this.setState({
+            isLoadingTransactions: false,
+            transactions,
+          });
+        }),
+        catchError((error) => {
+          this.setState({
+            isLoadingTransactions: false,
+            transactionsDataError: error,
+          });
+          return this.utilsService.handleError(error);
+        })
+      );
   }
 
-  createExpenseTransaction(transaction: ExpenseTransaction) {
+  createTransaction(
+    transaction: TransactionData,
+    transactionType: TransactionType
+  ) {
     this.setState({
       isLoadingCreateTransaction: true,
     });
     return from(
-      this.transactionsActionsService.createExpenseTransaction(transaction)
+      this.transactionsActionsService.createTransaction(
+        transaction,
+        transactionType
+      )
     ).pipe(
       tap(() => {
         this.setState({
@@ -126,17 +136,19 @@ export class TransactionStoreService extends Store<TransactionStore> {
     );
   }
 
-  editExpenseTransaction(
+  editTransaction(
     transactionId: string,
-    transaction: ExpenseTransaction
+    transaction: TransactionData,
+    transactionType: TransactionType
   ) {
     this.setState({
       isLoadingUpdateTransaction: true,
     });
     return from(
-      this.transactionsActionsService.editExpenseTransaction(
+      this.transactionsActionsService.editTransaction(
         transactionId,
-        transaction
+        transaction,
+        transactionType
       )
     ).pipe(
       tap(() => {
@@ -156,12 +168,15 @@ export class TransactionStoreService extends Store<TransactionStore> {
     );
   }
 
-  deleteExpenseTransaction(transactionId: string) {
+  deleteTransaction(transactionId: string, transactionType: TransactionType) {
     this.setState({
       isLoadingDeleteTransaction: true,
     });
     return from(
-      this.transactionsActionsService.deleteExpenseTransaction(transactionId)
+      this.transactionsActionsService.deleteTransaction(
+        transactionId,
+        transactionType
+      )
     ).pipe(
       tap(() => {
         this.setState({
@@ -180,39 +195,41 @@ export class TransactionStoreService extends Store<TransactionStore> {
     );
   }
 
-  // -------------------- EXPENSE TRANSACTIONS END --------------------
-
-  getIncomeTransactions() {
+  getWalletToWalletTransactions() {
     this.setState({
-      isLoadingIncomeTransactions: true,
+      isLoadingWalletToWalletTransaction: true,
     });
-    return this.transactionsActionsService.getIncomeTransactions().pipe(
-      tap((incomeTransactions) => {
+    return this.transactionsActionsService.getWalletToWalletTransactions().pipe(
+      tap((walletToWalletTransactions) => {
         this.setState({
-          isLoadingIncomeTransactions: false,
-          incomeTransactions,
+          isLoadingWalletToWalletTransaction: false,
+          walletToWalletTransactions,
         });
       }),
       catchError((error) => {
         this.setState({
-          isLoadingIncomeTransactions: false,
-          incomeTransactionsDataError: error,
+          isLoadingWalletToWalletTransaction: false,
+          walletToWalletTransactionError: error,
         });
         return this.utilsService.handleError(error);
       })
     );
   }
 
-  createIncomeTransaction(transaction: IncomeTransaction) {
+  createWalletToWalletTransaction(transaction: WalletToWalletTransactionData) {
     this.setState({
-      isLoadingCreateTransaction: true,
+      isLoadingWalletToWalletTransaction: true,
     });
     return from(
-      this.transactionsActionsService.createIncomeTransaction(transaction)
+      this.transactionsActionsService.createWalletToWalletTransaction({
+        ...transaction,
+        category: 'Internal',
+        subcategory: 'wallet to wallet',
+      })
     ).pipe(
       tap(() => {
         this.setState({
-          isLoadingCreateTransaction: false,
+          isLoadingWalletToWalletTransaction: false,
         });
         this.utilsService.handleShowSnackbar(
           'Transaction successfully created'
@@ -220,58 +237,7 @@ export class TransactionStoreService extends Store<TransactionStore> {
       }),
       catchError((error) => {
         this.setState({
-          isLoadingCreateTransaction: false,
-        });
-        return this.utilsService.handleError(error);
-      })
-    );
-  }
-
-  editIncomeTransaction(transactionId: string, transaction: IncomeTransaction) {
-    this.setState({
-      isLoadingUpdateTransaction: true,
-    });
-    return from(
-      this.transactionsActionsService.editIncomeTransaction(
-        transactionId,
-        transaction
-      )
-    ).pipe(
-      tap(() => {
-        this.setState({
-          isLoadingUpdateTransaction: false,
-        });
-        this.utilsService.handleShowSnackbar(
-          'Transaction successfully updated'
-        );
-      }),
-      catchError((error) => {
-        this.setState({
-          isLoadingUpdateTransaction: false,
-        });
-        return this.utilsService.handleError(error);
-      })
-    );
-  }
-
-  deleteIncomeTransaction(transactionId: string) {
-    this.setState({
-      isLoadingDeleteTransaction: true,
-    });
-    return from(
-      this.transactionsActionsService.deleteIncomeTransaction(transactionId)
-    ).pipe(
-      tap(() => {
-        this.setState({
-          isLoadingDeleteTransaction: false,
-        });
-        this.utilsService.handleShowSnackbar(
-          'Transaction successfully deleted'
-        );
-      }),
-      catchError((error) => {
-        this.setState({
-          isLoadingDeleteTransaction: false,
+          isLoadingWalletToWalletTransaction: false,
         });
         return this.utilsService.handleError(error);
       })

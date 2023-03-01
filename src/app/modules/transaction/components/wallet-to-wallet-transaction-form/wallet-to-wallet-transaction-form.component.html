@@ -1,0 +1,95 @@
+<form [formGroup]="walToWalForm" (submit)="handleFormSubmit()">
+  <h1 class="form__header">
+    {{ 'Wallets Transfer' }}
+  </h1>
+  <div [ngClass]="{ 'form__del-btn-shown': fromWallet?.value }">
+    <mat-form-field appearance="outline">
+      <mat-label>From Wallet</mat-label>
+      <mat-select formControlName="fromWallet" disableOptionCentering>
+        <mat-option *ngFor="let wallet of wallets" [value]="wallet">
+          {{
+            wallet.name + ' (' + (wallet.currentBalance | priceTransform) + ')'
+          }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="fromWallet?.hasError('required')"
+        >Please select wallet
+      </mat-error>
+    </mat-form-field>
+    <button
+      style="margin-top: 5px"
+      mat-mini-fab
+      color="primary"
+      (click)="handleClearFromWalletField()"
+      *ngIf="fromWallet?.value">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-form-field appearance="outline" *ngIf="fromWallet?.value">
+    <mat-label>To Wallet</mat-label>
+    <mat-select formControlName="toWallet" disableOptionCentering>
+      <mat-option *ngFor="let wallet of remainingWallets" [value]="wallet">
+        {{
+          wallet.name + ' (' + (wallet.currentBalance | priceTransform) + ')'
+        }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="toWallet?.hasError('required')">
+      Please select wallet
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Amount</mat-label>
+    <input matInput formControlName="amount" type="number" />
+    <mat-icon class="form__icon" matSuffix>euro</mat-icon>
+    <mat-error *ngIf="amount?.hasError('required')">
+      Please enter transaction amount
+    </mat-error>
+    <mat-error
+      *ngIf="!amount?.hasError('required') && amount?.hasError('negativeNumber')">
+      Please enter positive amount
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a date</mat-label>
+    <input
+      class="input_date"
+      matInput
+      type="datetime-local"
+      formControlName="date"
+    />
+    <mat-error *ngIf="date?.hasError('required')">
+      Please select date
+    </mat-error>
+    <mat-error
+      *ngIf="!date?.hasError('required') && date?.hasError('dateFormat')"
+    >
+      Please enter a valid date format
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>
+      Description
+      <span class="transaction-form__optional-field"> (optional) </span>
+    </mat-label>
+    <textarea
+      #message
+      maxlength="150"
+      matInput
+      formControlName="description"
+    ></textarea>
+    <mat-hint align="end">{{ message.value.length }} / 150</mat-hint>
+  </mat-form-field>
+  <button
+    class="form__button"
+    mat-raised-button
+    type="submit"
+    color="primary"
+    [disabled]="isSaveTransactionLoading || !walToWalForm.valid">
+    <mat-icon *ngIf="isSaveTransactionLoading">
+      <mat-spinner color="accent" diameter="20"></mat-spinner>
+    </mat-icon>
+    <span *ngIf="!isSaveTransactionLoading">Save Transaction</span>
+  </button>
+</form>

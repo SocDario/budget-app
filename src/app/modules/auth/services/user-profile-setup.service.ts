@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, take, tap } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Category } from '../../transaction/models/Category';
+import { Category } from '../../transaction/models';
 import { CategoryActionsService } from '../../transaction/services/category-actions.service';
 
 @Injectable({

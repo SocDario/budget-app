@@ -1,0 +1,37 @@
+<ng-container
+  *ngIf="
+    (isLoadingWalletUpdate$ | async)! || (isLoadingWallets$ | async);
+    else showContent
+  "
+>
+  <div class="loading-container">
+    <mat-spinner color="accent" diameter="50"> </mat-spinner>
+    <p class="loading-container__text">Loading, please wait...</p>
+  </div>
+</ng-container>
+<ng-template #showContent>
+  <app-back-round-button></app-back-round-button>
+  <ng-container
+    *ngIf="(wallets$ | async)?.length! > 1; else noWalletsContainer"
+  >
+    <div class="main-container">
+      <app-wallet-to-wallet-transaction-form
+        [wallets]="(wallets$ | async) || []"
+        [isSaveTransactionLoading]="
+          (isLoadingWalletUpdate$ | async)! ||
+          (isLoadingWalletToWalletTransaction$ | async)!
+        "
+        (formSubmitted)="handleWalletToWalletTransfer($event)"
+      >
+      </app-wallet-to-wallet-transaction-form>
+    </div>
+  </ng-container>
+  <ng-template #noWalletsContainer>
+    <div class="main-container main-container__center">
+      <mat-icon class="main-container__icon-empty-state">
+        credit_card_off
+      </mat-icon>
+      <p>You need to have at least two wallets to transfer funds.</p>
+    </div>
+  </ng-template>
+</ng-template>

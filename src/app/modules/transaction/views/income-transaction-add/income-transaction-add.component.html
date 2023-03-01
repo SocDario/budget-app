@@ -18,7 +18,7 @@
       <app-transaction-form
         [wallets]="(wallets$ | async)!"
         [categories]="(categories$ | async)!"
-        [transactionType]="'expense'"
+        [transactionType]="'income'"
         (formSubmited)="onFormSubmit($event)"
       ></app-transaction-form>
     </div>

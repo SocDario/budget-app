@@ -24,4 +24,10 @@ export class TransactionHomeComponent {
       relativeTo: this.route,
     });
   }
+
+  handleNavigateWalletTransfer() {
+    this.router.navigate([AppRoutes.WalletToWalletTransfer], {
+      relativeTo: this.route
+    })
+  }
 }

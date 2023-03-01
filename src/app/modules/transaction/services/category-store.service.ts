@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, from, tap } from 'rxjs';
 import { Store } from '../../shared/classes/store.class';
 import { UtilsService } from '../../shared/services/utils.service';
-import { Category, CategoryType } from '../models/Category';
+import { Category, CategoryType } from '../models';
 import { CategoryActionsService } from './category-actions.service';
 
 interface TransactionCategoryStore {

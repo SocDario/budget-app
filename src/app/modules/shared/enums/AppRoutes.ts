@@ -7,4 +7,5 @@ export enum AppRoutes {
   Transactions = 'transactions',
   ExpenseTransaction = 'create-expense',
   IncomeTransaction = 'create-income',
+  WalletToWalletTransfer = 'wallet-to-wallet-transfer'
 }

@@ -9,20 +9,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
-import { ExpenseTransactionFormComponent } from './components/expense-transaction-form/expense-transaction-form.component';
-import { IncomeTransactionFormComponent } from './components/income-transaction-form/income-transaction-form.component';
+import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
 import { ExpenseTransactionAddComponent } from './views/expense-transaction-add/expense-transaction-add.component';
+import { IncomeTransactionAddComponent } from './views/income-transaction-add/income-transaction-add.component';
+import { WalletToWalletTransferComponent } from './views/wallet-to-wallet-transfer/wallet-to-wallet-transfer.component';
+import { WalletToWalletTransactionFormComponent } from './components/wallet-to-wallet-transaction-form/wallet-to-wallet-transaction-form.component';
 
 @NgModule({
   declarations: [
     TransactionHomeComponent,
-    ExpenseTransactionFormComponent,
-    IncomeTransactionFormComponent,
+    TransactionFormComponent,
     ExpenseTransactionAddComponent,
+    IncomeTransactionAddComponent,
+    WalletToWalletTransferComponent,
+    WalletToWalletTransactionFormComponent,
   ],
   imports: [
     CommonModule,

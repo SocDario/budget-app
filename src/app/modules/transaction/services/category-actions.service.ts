@@ -4,7 +4,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
-import { Category, CategoryType } from '../models/Category';
+import { Category, CategoryType } from '../models';
 
 enum CategoryCollection {
   ExpenseCategories = 'expenseCategories',

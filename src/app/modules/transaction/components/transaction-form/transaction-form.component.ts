@@ -3,28 +3,27 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import * as moment from 'moment';
 import { Wallet } from 'src/app/modules/wallet/models';
-import { ExpenseTransaction } from '../../models';
-import { Category } from '../../models/Category';
-import { Timestamp } from 'firebase/firestore';
+import { Category, TransactionData, TransactionType } from '../../models';
+import { dateValidator, convertDateToFirebaseTimestamp, nonNegativeNumberValidator } from '../../utils';
 
 @Component({
-  selector: 'app-expense-transaction-form',
-  templateUrl: './expense-transaction-form.component.html',
-  styleUrls: ['./expense-transaction-form.component.scss'],
+  selector: 'app-transaction-form',
+  templateUrl: './transaction-form.component.html',
+  styleUrls: ['./transaction-form.component.scss'],
 })
-export class ExpenseTransactionFormComponent {
+export class TransactionFormComponent {
   @Input() wallets?: Wallet[];
   @Input() categories?: Category[];
-  @Output() formSubmited = new EventEmitter<ExpenseTransaction>();
+  @Input() transactionType?: TransactionType;
+  @Output() formSubmited = new EventEmitter<TransactionData>();
 
-  selectedWallet?: Wallet;
   transactionForm = this.fb.group({
-    amount: [undefined, [Validators.required]],
+    amount: [undefined, [Validators.required, nonNegativeNumberValidator]],
     walletId: ['', [Validators.required]],
     category: ['', [Validators.required]],
     subcategory: ['', [Validators.required]],
-    date: ['', [this.dateValidator, Validators.required]],
-    transactionTo: '',
+    date: ['', [dateValidator, Validators.required]],
+    transactionOrigin: '',
     location: '',
     description: '',
     isRecurringTransaction: false,
@@ -61,8 +60,8 @@ export class ExpenseTransactionFormComponent {
     return this.transactionForm.get('location');
   }
 
-  get transactionTo() {
-    return this.transactionForm.get('transactionTo');
+  get transactionOrigin() {
+    return this.transactionForm.get('transactionOrigin');
   }
 
   get date() {
@@ -71,6 +70,12 @@ export class ExpenseTransactionFormComponent {
 
   get isRecurringTransaction() {
     return this.transactionForm.get('isRecurringTransaction');
+  }
+
+  onCategorySelection(event: MatOptionSelectionChange, category: string) {
+    if (event.isUserInput) {
+      this.transactionForm.get('category')?.setValue(category);
+    }
   }
 
   handleFormSubmit() {
@@ -83,38 +88,24 @@ export class ExpenseTransactionFormComponent {
     ) {
       return;
     }
-    const timestamp = this.convertDateToFirebaseTimestamp(this.date.value);
-    const formData = {
+    const timestamp = convertDateToFirebaseTimestamp(this.date.value);
+
+    const transaction: TransactionData = {
       walletId: this.walletId.value,
       category: this.category.value,
       subcategory: this.subcategory.value,
       amount: this.amount.value,
       description: this.description?.value || null,
       location: this.location?.value || null,
-      transactionTo: this.transactionTo?.value || null,
       recurringTransaction: this.isRecurringTransaction?.value!,
+      transactionOrigin: this.transactionOrigin?.value || null,
       date: timestamp,
     };
-    this.formSubmited.emit(formData);
+
+    this.formSubmited.emit(transaction);
   }
 
-  onCategorySelection(event: MatOptionSelectionChange, category: string) {
-    if (event.isUserInput) {
-      this.transactionForm.get('category')?.setValue(category);
-    }
-  }
-
-  onSelectWallet(wallet: Wallet) {
-    this.selectedWallet = wallet;
-  }
-
-  convertDateToFirebaseTimestamp(dateString: string) {
-    const date = new Date(dateString);
-    const firebaseTimestamp = Timestamp.fromDate(date);
-    return firebaseTimestamp;
-  }
-
-  dateValidator(control: AbstractControl): { [key: string]: any } | null {
+  dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const date = new Date(control.value);
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 

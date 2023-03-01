@@ -1,6 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 
-export interface IncomeTransaction {
+export type TransactionType = 'income' | 'expense';
+export interface TransactionData {
   id?: string;
   walletId: string;
   category: string;
@@ -10,18 +11,16 @@ export interface IncomeTransaction {
   recurringTransaction: boolean;
   location: string | null;
   description: string | null;
-  transactionFrom: string | null;
+  transactionOrigin: string | null;
 }
 
-export interface ExpenseTransaction {
+export interface WalletToWalletTransactionData {
   id?: string;
-  walletId: string;
-  category: string;
-  subcategory: string;
+  fromWalletId: string;
+  toWalletId: string;
   amount: number;
-  date: Timestamp;
-  recurringTransaction: boolean;
+  category?: string;
+  subcategory?: string;
   description: string | null;
-  location: string | null;
-  transactionTo: string | null;
+  date: Timestamp;
 }

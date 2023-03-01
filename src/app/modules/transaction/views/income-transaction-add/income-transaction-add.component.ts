@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, merge, tap } from 'rxjs';
+import { merge } from 'rxjs';
 import { AppRoutes } from 'src/app/modules/shared/enums';
-import { Wallet } from 'src/app/modules/wallet/models';
 import { WalletStoreService } from 'src/app/modules/wallet/services/wallet-store.service';
 import { TransactionData, TransactionType } from '../../models';
 import { CategoryStoreService } from '../../services/category-store.service';
@@ -10,13 +9,12 @@ import { TransactionStoreService } from '../../services/transaction-store.servic
 import { filterWallets } from '../../utils';
 
 @Component({
-  selector: 'app-expense-transaction-add',
-  templateUrl: './expense-transaction-add.component.html',
-  styleUrls: ['./expense-transaction-add.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-income-transaction-add',
+  templateUrl: './income-transaction-add.component.html',
+  styleUrls: ['./income-transaction-add.component.scss'],
 })
-export class ExpenseTransactionAddComponent implements OnInit {
-  transactionType: TransactionType = 'expense';
+export class IncomeTransactionAddComponent implements OnInit {
+  transactionType: TransactionType = 'income';
   wallets$ = this.walletStoreService.wallets$;
   isLoadingWallets$ = this.walletStoreService.isLoadingWallets$;
   isLoadingWalletUpdate$ = this.walletStoreService.isLoadingWalletUpdate$;
@@ -32,28 +30,27 @@ export class ExpenseTransactionAddComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.categoryStoreService.getCategories('expense').subscribe();
+    this.categoryStoreService.getCategories('income').subscribe();
     this.walletStoreService.getUserWallets().subscribe();
   }
 
   onFormSubmit(transaction: TransactionData) {
     const wallet = filterWallets(transaction.walletId, this.wallets$);
-
     if (!wallet) {
       return;
     }
-    const updatedBalance = wallet.currentBalance - transaction.amount;
+    const updatedBalance = wallet.currentBalance + transaction.amount;
     const walletUpdate$ = this.walletStoreService.updateWallet(
       transaction.walletId,
       { ...wallet, currentBalance: updatedBalance }
     );
-    const expenseTransactionCreate$ =
+    const incomeTransactionCreate$ =
       this.transactionStoreService.createTransaction(
         transaction,
         this.transactionType
       );
 
-    const mergedObs$ = merge(walletUpdate$, expenseTransactionCreate$);
+    const mergedObs$ = merge(walletUpdate$, incomeTransactionCreate$);
 
     mergedObs$.subscribe(() => {
       this.router.navigate([AppRoutes.Home]);

@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
-import { ExpenseTransaction, IncomeTransaction } from '../models';
+import {
+  TransactionData,
+  TransactionType,
+  WalletToWalletTransactionData,
+} from '../models';
 
 export enum TransactionCollections {
   Transaction = 'transactions',
   Expenses = 'expenses',
   Incomes = 'incomes',
+  WalletToWallet = 'walletToWallet',
 }
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,50 +33,58 @@ export class TransactionActionsService {
     this.userId = this.authStoreService.userId;
   }
 
-  getExpenseCollection() {
+  determineTransactionType(transactionType: TransactionType) {
+    const transactionCollection =
+      transactionType === 'income'
+        ? TransactionCollections.Incomes
+        : TransactionCollections.Expenses;
     return this.transactionCollection
       .doc(this.userId)
-      .collection<ExpenseTransaction>(TransactionCollections.Expenses);
+      .collection<TransactionData>(transactionCollection);
   }
 
-  getIncomesCollection() {
-    return this.transactionCollection
-      .doc(this.userId)
-      .collection<IncomeTransaction>(TransactionCollections.Incomes);
+  getTransactions(transactionType: TransactionType) {
+    return this.determineTransactionType(transactionType).valueChanges({
+      idField: 'id',
+    });
   }
 
-  getExpenseTransactions() {
-    return this.getExpenseCollection().valueChanges({ idField: 'id' });
-  }
-
-  createExpenseTransaction(transaction: ExpenseTransaction) {
-    return this.getExpenseCollection().add(transaction);
-  }
-
-  editExpenseTransaction(
-    transactionId: string,
-    transaction: ExpenseTransaction
+  createTransaction(
+    transaction: TransactionData,
+    transactionType: TransactionType
   ) {
-    return this.getExpenseCollection().doc(transactionId).update(transaction);
+    return this.determineTransactionType(transactionType).add(transaction);
   }
 
-  deleteExpenseTransaction(transactionId: string) {
-    return this.getExpenseCollection().doc(transactionId).delete();
+  editTransaction(
+    transactionId: string,
+    transaction: TransactionData,
+    transactionType: TransactionType
+  ) {
+    return this.determineTransactionType(transactionType)
+      .doc(transactionId)
+      .update(transaction);
   }
 
-  getIncomeTransactions() {
-    return this.getIncomesCollection().valueChanges({ idField: 'id' });
+  deleteTransaction(transactionId: string, transactionType: TransactionType) {
+    return this.determineTransactionType(transactionType)
+      .doc(transactionId)
+      .delete();
   }
 
-  createIncomeTransaction(transaction: IncomeTransaction) {
-    return this.getIncomesCollection().add(transaction);
+  getWalletToWalletTransactions() {
+    const walToWalCollection = TransactionCollections.WalletToWallet;
+    return this.transactionCollection
+      .doc(this.userId)
+      .collection<WalletToWalletTransactionData>(walToWalCollection)
+      .valueChanges({ idField: 'id' });
   }
 
-  editIncomeTransaction(transactionId: string, transaction: IncomeTransaction) {
-    return this.getIncomesCollection().doc(transactionId).update(transaction);
-  }
-
-  deleteIncomeTransaction(transactionId: string) {
-    return this.getIncomesCollection().doc(transactionId).delete();
+  createWalletToWalletTransaction(transaction: WalletToWalletTransactionData) {
+    const walToWalCollection = TransactionCollections.WalletToWallet;
+    return this.transactionCollection
+      .doc(this.userId)
+      .collection<WalletToWalletTransactionData>(walToWalCollection)
+      .add(transaction);
   }
 }
