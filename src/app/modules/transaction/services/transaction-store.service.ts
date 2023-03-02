@@ -136,7 +136,7 @@ export class TransactionStoreService extends Store<TransactionStore> {
     );
   }
 
-  editTransaction(
+  updateTransaction(
     transactionId: string,
     transaction: TransactionData,
     transactionType: TransactionType
@@ -145,7 +145,7 @@ export class TransactionStoreService extends Store<TransactionStore> {
       isLoadingUpdateTransaction: true,
     });
     return from(
-      this.transactionsActionsService.editTransaction(
+      this.transactionsActionsService.updateTransaction(
         transactionId,
         transaction,
         transactionType

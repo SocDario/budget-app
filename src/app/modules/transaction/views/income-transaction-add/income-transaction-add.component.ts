@@ -42,7 +42,11 @@ export class IncomeTransactionAddComponent implements OnInit {
     const updatedBalance = wallet.currentBalance + transaction.amount;
     const walletUpdate$ = this.walletStoreService.updateWallet(
       transaction.walletId,
-      { ...wallet, currentBalance: updatedBalance }
+      {
+        ...wallet,
+        currentBalance: updatedBalance,
+        lastUsedTimestamp: transaction.date,
+      }
     );
     const incomeTransactionCreate$ =
       this.transactionStoreService.createTransaction(
