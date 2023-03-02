@@ -14,6 +14,8 @@ import { PriceTransformPipe } from '../shared/pipes/price-transform.pipe';
 import { CreateWalletFormComponent } from './components/create-wallet-form/create-wallet-form.component';
 import { WalletCreateComponent } from './views/wallet-create/wallet-create.component';
 import { SharedModule } from '../shared/shared.module';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { SharedModule } from '../shared/shared.module';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatSelectModule,
+    MatCheckboxModule,
     SharedModule,
   ],
   providers: [ErrorTransformPipe, PriceTransformPipe],

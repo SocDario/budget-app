@@ -19,6 +19,17 @@
       >This field is <strong>required</strong></mat-error
     >
   </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Wallet Type</mat-label>
+    <mat-select formControlName="walletType">
+      <mat-option *ngFor="let walletType of walletTypes" [value]="walletType">
+        {{ walletType | titlecase }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="walletType?.hasError('required')"
+      >This field is <strong>required</strong></mat-error
+    >
+  </mat-form-field>
   <button
     class="wallet-form__button"
     mat-raised-button
