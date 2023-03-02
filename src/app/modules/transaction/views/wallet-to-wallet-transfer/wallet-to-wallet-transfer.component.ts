@@ -6,6 +6,7 @@ import { Wallet } from 'src/app/modules/wallet/models';
 import { WalletStoreService } from 'src/app/modules/wallet/services/wallet-store.service';
 import { WalletToWalletTransactionData } from '../../models';
 import { TransactionStoreService } from '../../services/transaction-store.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-wallet-to-wallet-transfer',
@@ -42,9 +43,11 @@ export class WalletToWalletTransferComponent {
       this.handleUpdateWallets(
         transaction.amount,
         transaction.fromWalletId,
-        transaction.toWalletId
+        transaction.toWalletId,
+        transaction.date
       )
     );
+
     mergedObs$.subscribe(() => {
       this.router.navigate([AppRoutes.Home]);
     });
@@ -53,7 +56,8 @@ export class WalletToWalletTransferComponent {
   handleUpdateWallets(
     transactionAmount: number,
     fromWalletId: string,
-    toWalletId: string
+    toWalletId: string,
+    transactionDate: Timestamp
   ) {
     const fromWallet = this.wallets.find(
       (wallet) => wallet.id === fromWalletId
@@ -67,11 +71,19 @@ export class WalletToWalletTransferComponent {
 
     const fromWalletUpdate$ = this.walletStoreService.updateWallet(
       fromWallet?.id!,
-      { ...fromWallet!, currentBalance: fromWalletUpdatedBalance }
+      {
+        ...fromWallet!,
+        currentBalance: fromWalletUpdatedBalance,
+        lastUsedTimestamp: transactionDate,
+      }
     );
     const toWalletUpdate$ = this.walletStoreService.updateWallet(
       toWallet?.id!,
-      { ...toWallet!, currentBalance: toWalletUpdatedBalance }
+      {
+        ...toWallet!,
+        currentBalance: toWalletUpdatedBalance,
+        lastUsedTimestamp: transactionDate,
+      }
     );
 
     return merge(fromWalletUpdate$, toWalletUpdate$);

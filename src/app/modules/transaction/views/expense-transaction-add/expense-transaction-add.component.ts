@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, merge, tap } from 'rxjs';
+import { merge } from 'rxjs';
 import { AppRoutes } from 'src/app/modules/shared/enums';
-import { Wallet } from 'src/app/modules/wallet/models';
 import { WalletStoreService } from 'src/app/modules/wallet/services/wallet-store.service';
 import { TransactionData, TransactionType } from '../../models';
 import { CategoryStoreService } from '../../services/category-store.service';
@@ -45,7 +44,11 @@ export class ExpenseTransactionAddComponent implements OnInit {
     const updatedBalance = wallet.currentBalance - transaction.amount;
     const walletUpdate$ = this.walletStoreService.updateWallet(
       transaction.walletId,
-      { ...wallet, currentBalance: updatedBalance }
+      {
+        ...wallet,
+        currentBalance: updatedBalance,
+        lastUsedTimestamp: transaction.date,
+      }
     );
     const expenseTransactionCreate$ =
       this.transactionStoreService.createTransaction(

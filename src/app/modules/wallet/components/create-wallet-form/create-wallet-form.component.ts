@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Timestamp } from 'firebase/firestore';
-import { generateRandomId } from 'src/app/modules/shared/utils';
 import { Wallet } from '../../models';
 
 @Component({
@@ -31,7 +30,6 @@ export class CreateWalletFormComponent {
   handleCreateWallet() {
     if (this.name?.value && this.balance?.value) {
       this.createWallet.emit({
-        userId: '',
         name: this.name.value,
         currentBalance: this.balance.value,
         createdTimestamp: Timestamp.now(),

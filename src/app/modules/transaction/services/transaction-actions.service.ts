@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthStoreService } from '../../auth/services/auth-store.service';
 import {
   TransactionData,
@@ -56,7 +53,7 @@ export class TransactionActionsService {
     return this.determineTransactionType(transactionType).add(transaction);
   }
 
-  editTransaction(
+  updateTransaction(
     transactionId: string,
     transaction: TransactionData,
     transactionType: TransactionType

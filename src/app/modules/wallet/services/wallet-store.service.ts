@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { catchError, from, tap } from 'rxjs';
-import { AuthStoreService } from '../../auth/services/auth-store.service';
 import { Store } from '../../shared/classes/store.class';
 import { UtilsService } from '../../shared/services/utils.service';
 import { Wallet } from '../models';
@@ -40,18 +39,16 @@ export class WalletStoreService extends Store<WalletStore> {
 
   constructor(
     private readonly walletActionService: WalletActionsService,
-    private readonly authStoreService: AuthStoreService,
     private readonly utilsService: UtilsService
   ) {
     super(initialsValues);
-    this.userId = this.authStoreService.userId;
   }
 
   getUserWallets() {
     this.setState({
       isLoadingWallets: true,
     });
-    return this.walletActionService.getAllWallets(this.userId!).pipe(
+    return this.walletActionService.getAllWallets().pipe(
       tap((wallets) => {
         this.setState({
           wallets: wallets,
@@ -71,9 +68,7 @@ export class WalletStoreService extends Store<WalletStore> {
     this.setState({
       isLoadingCreateWallet: true,
     });
-    return from(
-      this.walletActionService.createWallet({ ...wallet, userId: this.userId! })
-    ).pipe(
+    return from(this.walletActionService.createWallet(wallet)).pipe(
       tap(() => {
         this.setState({
           isLoadingCreateWallet: false,
